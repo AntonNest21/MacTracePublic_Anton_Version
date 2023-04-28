@@ -11,8 +11,10 @@ object Form1: TForm1
   Font.Name = 'Tahoma'
   Font.Style = []
   Menu = MainMenu1
+  OldCreateOrder = True
   Position = poDesigned
   OnCreate = FormCreate
+  PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
     Left = 8
@@ -343,8 +345,6 @@ object Form1: TForm1
         Text = 'Progress'
         Width = 50
       end>
-    ExplicitTop = 547
-    ExplicitWidth = 915
   end
   object Button4: TButton
     Left = 168

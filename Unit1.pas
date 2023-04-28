@@ -9,7 +9,7 @@ uses
   ksConstTLB,
   math, ComObj, Vcl.ComCtrls, Vcl.Samples.Gauges, SyncObjs, Vcl.ExtCtrls,
   Unit2;
-
+      // asda sdasdasdqweqew
 type
   Array_Trass = array [1 .. 15] of double;
 

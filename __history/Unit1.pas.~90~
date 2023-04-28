@@ -73,6 +73,7 @@ type
     N22: TMenuItem;
     N23: TMenuItem;
     N24: TMenuItem;
+    cbInvert: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure N1Click(Sender: TObject);
     procedure N3Click(Sender: TObject);
@@ -83,6 +84,7 @@ type
     procedure N9Click(Sender: TObject);
     procedure N10Click(Sender: TObject);
     Procedure Fibanachi_V(n, n_2: integer; Fi: double);
+    Procedure Fibanachi_V_m(n, n_2: integer; Fi: double);
     function Trass(x0, y0, z0, x01, y01, z01, Svet_Pottok: double): Array_Trass;
     function Otr(x1, y1, z1, x2, y2, z2, A, B, C: double): Array_Trass;
     function S_Plo(x1, y1, z1, x2, y2, z2, x3, y3, z3: double): double;
@@ -113,6 +115,7 @@ type
     procedure Button6Click(Sender: TObject);
     procedure Button7Click(Sender: TObject);
     procedure N23Click(Sender: TObject);
+    procedure Frame21Click(Sender: TObject);
 
   private
     n_cell_col: integer;
@@ -345,7 +348,7 @@ begin
   Flag_Kss_1 := 0;
 end;
 
-// Трассировка    (начало и конец вектора излучения + поток в луче?)
+// Трассировка    (начало и конец вектора излучения (до пересечения с плоскостью) + поток в луче?)
 function TForm1.Trass(x0, y0, z0, x01, y01, z01, Svet_Pottok: double)
   : Array_Trass;
 var
@@ -592,6 +595,11 @@ begin
   end;
   if connected then
     Form1.StatusBar1.Panels[0].Text := 'Компас подключен';
+end;
+
+procedure TForm1.Frame21Click(Sender: TObject);
+begin
+
 end;
 
 // Загрузить последнее сохр.
@@ -1428,6 +1436,7 @@ begin
   // Fi:=0;
   // n_2 := 3;             //50
 
+  // определяем шаг градусов для вычисления?  n*n_2 - колво лучей источника
   if strtoint(Edit1.Text) < 15000 then // Количество лучей
   begin
     n_2 := 40;
@@ -1461,7 +1470,18 @@ begin
   for i := 0 to (n_2 - 1) do
   begin
     Application.ProcessMessages;
-    Fibanachi_V(n, n_2, Fi);
+    // showMessage(inttostr(fmTraceSettings.radiogroup1.itemindex));
+    case fmTraceSettings.radiogroup1.itemindex of
+      - 1:
+        ;
+      0:
+        Fibanachi_V(n, n_2, Fi);
+      1:
+        begin
+          Fibanachi_V_m(n, n_2, Fi);
+        end;
+    end;
+
     Fi := Fi + d_Fi;
     Gauge1.Progress := i + 1;
   end;
@@ -1961,179 +1981,264 @@ end;
 
 procedure TForm1.Fibanachi_V(n, n_2: integer; Fi: double);
 var
-  k, j, Strk_Sin, k1, Kt, typeOfIliium, TriangCount, raysCount: integer;
-
-  d_V, v, sum, F_sv, Random_1, Random_2, Random_3, Shag_1, Shag,
-    F_Svett: double;
+  k, j, Strk_Sin, k1, Kt: integer;
+  d_V, v, sum, F_sv, Random_1, Random_2, Shag_1, Shag, F_Svett: double;
   Array_Sin: Array of Array of single;
   Array_Const: Array [1 .. 36] of double;
   i: integer;
 begin
+  // memo1.Clear;
+  d_V := 5;
+  v := 90;
+  Kt := 0;
 
-  typeOfIliium := 1;
-  // тип излучения (косинусное, направленно-рассеянное - на будущее)
-  raysCount := 15000; // high(Light_Array);
-  TriangCount := 9;
+  Array_Const[1] := 0.0072934;
+  Array_Const[2] := 0.0145312;
+  Array_Const[3] := 0.0216585;
+  Array_Const[4] := 0.0286209;
+  Array_Const[5] := 0.0353655;
+  Array_Const[6] := 0.041841;
+  Array_Const[7] := 0.047998;
+  Array_Const[8] := 0.0537898;
+  Array_Const[9] := 0.0591721;
+  Array_Const[10] := 0.0641041;
+  Array_Const[11] := 0.0685483;
+  Array_Const[12] := 0.0724707;
+  Array_Const[13] := 0.0758417;
+  Array_Const[14] := 0.0786354;
+  Array_Const[15] := 0.0808306;
+  Array_Const[16] := 0.0824107;
+  Array_Const[17] := 0.0833636;
+  Array_Const[18] := 0.083682;
 
-  if CheckBox1.Checked then
-    F_Svett := strtoint(Edit2.Text) * Kol_Ist
-  else
-    F_Svett := strtoint(Edit2.Text);
+  Array_Const[36] := 0.0072934;
+  Array_Const[35] := 0.0145312;
+  Array_Const[34] := 0.0216585;
+  Array_Const[33] := 0.0286209;
+  Array_Const[32] := 0.0353655;
+  Array_Const[31] := 0.041841;
+  Array_Const[30] := 0.047998;
+  Array_Const[29] := 0.0537898;
+  Array_Const[28] := 0.0591721;
+  Array_Const[27] := 0.0641041;
+  Array_Const[26] := 0.0685483;
+  Array_Const[25] := 0.0724707;
+  Array_Const[24] := 0.0758417;
+  Array_Const[23] := 0.0786354;
+  Array_Const[22] := 0.0808306;
+  Array_Const[21] := 0.0824107;
+  Array_Const[20] := 0.0833636;
+  Array_Const[19] := 0.083682;
 
-  k := 0;
-  for i := 0 to TriangCount do
+
+  // F_sv:=strtoint(edit2.Text)/(n*n_2);
+
+  Strk_Sin := 1;
+  SetLength(Array_Sin, (Floor(180 / d_V) + 1), 10);
+
+  for j := 0 to Floor(180 / d_V) - 1 do
   begin
-    for j := 0 to Floor(raysCount / TriangCount) do
-    // нужно будет исправить, чтоб учитывался размер треугольника
-    begin
-      Randomize;
-      Random_1 := Random;
-      Random_2 := Random;
-      Random_3 := Random;
-      // прописываем начало луча - перавая точка треугольника:
-      Light_Array[k, 1] := PointsArray2[i, 1];
-      Light_Array[k, 2] := PointsArray2[i, 2];
-      Light_Array[k, 3] := PointsArray2[i, 3];
-      // записываем в массив конец луча  (определяющий по сути направление)
-      Light_Array[k, 4] := PointsArray2[i, 1] + 50 * sin(DegToRad(v + Shag_1)) *
-        sin(DegToRad(Fi + Random_1));
-      Light_Array[k, 5] := PointsArray2[i, 1] + 50 * sin(DegToRad(v + Shag_1)) *
-        cos(DegToRad(Fi + Random_1));
-      Light_Array[k, 6] := PointsArray2[i, 1] + 50 * cos(DegToRad(v + Shag_1));
-
-      Light_Array[k, 7] := F_sv;
-
-      inc(k);
-      // cos(DegToRad(v - d_V
-    end;
-  end;
-  while k < raysCount do          // дозаполнить  массив пустыми значениями
-  begin
-    for i := 0 to 7 do
-      Light_Array[k, i] := 0.00000001;
-    inc(k);
-  end;
-
-  { Переписал полностью, это старый код:
-    d_V := 5;
-    v := 90;
-    Kt := 0;
-
-    Array_Const[1] := 0.0072934;
-    Array_Const[2] := 0.0145312;
-    Array_Const[3] := 0.0216585;
-    Array_Const[4] := 0.0286209;
-    Array_Const[5] := 0.0353655;
-    Array_Const[6] := 0.041841;
-    Array_Const[7] := 0.047998;
-    Array_Const[8] := 0.0537898;
-    Array_Const[9] := 0.0591721;
-    Array_Const[10] := 0.0641041;
-    Array_Const[11] := 0.0685483;
-    Array_Const[12] := 0.0724707;
-    Array_Const[13] := 0.0758417;
-    Array_Const[14] := 0.0786354;
-    Array_Const[15] := 0.0808306;
-    Array_Const[16] := 0.0824107;
-    Array_Const[17] := 0.0833636;
-    Array_Const[18] := 0.083682;
-
-    Array_Const[36] := 0.0072934;
-    Array_Const[35] := 0.0145312;
-    Array_Const[34] := 0.0216585;
-    Array_Const[33] := 0.0286209;
-    Array_Const[32] := 0.0353655;
-    Array_Const[31] := 0.041841;
-    Array_Const[30] := 0.047998;
-    Array_Const[29] := 0.0537898;
-    Array_Const[28] := 0.0591721;
-    Array_Const[27] := 0.0641041;
-    Array_Const[26] := 0.0685483;
-    Array_Const[25] := 0.0724707;
-    Array_Const[24] := 0.0758417;
-    Array_Const[23] := 0.0786354;
-    Array_Const[22] := 0.0808306;
-    Array_Const[21] := 0.0824107;
-    Array_Const[20] := 0.0833636;
-    Array_Const[19] := 0.083682;
-
-    Strk_Sin := 1;
-    SetLength(Array_Sin, (Floor(180 / d_V) + 1), 10);
-
-    for j := 0 to Floor(180 / d_V) - 1 do
-    begin
     Array_Sin[Strk_Sin - 1, 1] := cos(DegToRad(v - d_V));
     Array_Sin[Strk_Sin - 1, 2] := Array_Const[j + 1] * (n / 2);
     v := v - d_V;
     inc(Strk_Sin);
+  end;
+
+  Randomize;
+
+  v := 90;
+
+  case CheckBox1.Checked of
+    True:
+      F_Svett := strtoint(Edit2.Text) * Kol_Ist;
+    False:
+      F_Svett := strtoint(Edit2.Text);
+  end;
+
+  for k := 0 to Floor(180 / d_V) - 1 do
+  begin
+    F_sv := (((159.16 / (n_2 * 2)) * Array_Const[k + 1]) /
+      roundto(Array_Sin[k, 2], 0)) * ((F_Svett / 1000));
+    Shag_1 := 0;
+    for k1 := 0 to Floor(roundto(Array_Sin[k, 2], 0)) - 1 do
+    begin
+      if Kt >= Strk2 - 1 then
+      begin
+        Kt := 0;
+        Random_1 := Random(4);
+        // Random_2:=Random(3);
+        Shag := 5 / Floor((Array_Sin[k, 2]));
+        Shag_1 := Shag_1 + Shag;
+
+        Light_Array[Strk_L - 1, 1] := PointsArray2[Kt, 1];
+        Light_Array[Strk_L - 1, 2] := PointsArray2[Kt, 2];
+        Light_Array[Strk_L - 1, 3] := PointsArray2[Kt, 3];
+
+        Light_Array[Strk_L - 1, 4] := PointsArray2[Kt, 1] + 50 *
+          sin(DegToRad(v + Shag_1)) * sin(DegToRad(Fi + Random_1));
+        Light_Array[Strk_L - 1, 5] := PointsArray2[Kt, 2] + 50 *
+          sin(DegToRad(v + Shag_1)) * cos(DegToRad(Fi + Random_1));
+        Light_Array[Strk_L - 1, 6] := PointsArray2[Kt, 3] + 50 *
+          cos(DegToRad(v + Shag_1));
+
+        Light_Array[Strk_L - 1, 7] := F_sv;
+
+        Kt := Kt + 1;
+        inc(Strk_L);
+      end
+      else
+      begin
+        Random_1 := Random(4);
+        // Random_2:=Random(3);
+        Shag := 5 / Floor((Array_Sin[k, 2]));
+        Shag_1 := Shag_1 + Shag;
+
+        Light_Array[Strk_L - 1, 1] := PointsArray2[Kt, 1];
+        Light_Array[Strk_L - 1, 2] := PointsArray2[Kt, 2];
+        Light_Array[Strk_L - 1, 3] := PointsArray2[Kt, 3];
+
+        Light_Array[Strk_L - 1, 4] := PointsArray2[Kt, 1] + 50 *
+          sin(DegToRad(v + Shag_1)) * sin(DegToRad(Fi + Random_1));
+        Light_Array[Strk_L - 1, 5] := PointsArray2[Kt, 2] + 50 *
+          sin(DegToRad(v + Shag_1)) * cos(DegToRad(Fi + Random_1));
+        Light_Array[Strk_L - 1, 6] := PointsArray2[Kt, 3] + 50 *
+          cos(DegToRad(v + Shag_1));
+
+        Light_Array[Strk_L - 1, 7] := F_sv;
+
+        Kt := Kt + 1;
+        inc(Strk_L);
+      end;
     end;
+    v := v + d_V;
+  end;
+end;
 
-    Randomize;
+procedure TForm1.Fibanachi_V_m(n, n_2: integer; Fi: double);
+var
+  k, j, Strk_Sin, k1, Kt, typeOfIliium, TriangCount, raysCount: integer;
+  dx, dy, dz, fi777, psi: double;
+  d_V, v, sum, F_sv, F_Svett: double;
+  i: integer;
+begin
+  Randomize;
+  d_V := 5;
+  v := 90;
+  Kt := 0;
 
-    v := 90;
+  for k := 0 to Floor(180 / d_V) - 1 do
+  begin
+    for k1 := 0 to 20 { Floor(roundto(Array_Sin[k, 2], 0)) - 1 } do
+    begin
+      if Kt >= Strk2 - 1 then
+        Kt := 0;
+
+      // прописываем начало луча - перавая точка треугольника:
+      Light_Array[Strk_L - 1, 1] := PointsArray2[Kt, 1];
+      Light_Array[Strk_L - 1, 2] := PointsArray2[Kt, 2];
+      Light_Array[Strk_L - 1, 3] := PointsArray2[Kt, 3];
+
+      // Считаем вектор нормали:
+      dx := PointsArray2[i, 8];
+      dy := PointsArray2[i, 9];
+      dz := PointsArray2[i, 10];
+      fi777 := ArcCos(dz / sqrt(dx * dx + dy * dy + dz * dz));
+      psi := ArcTan(dx / dy);
+
+      if cbInvert.Checked = True then
+        fi777 := pi() + fi777;
+
+      // записываем в массив конец луча  (определяющий по сути направление)
+      // В зависимости от выбранного режима
+      case 0 of
+        0:
+          begin
+            Light_Array[Strk_L - 1, 4] := PointsArray2[Kt, 1] + 50 *
+              sin(fi777 + pi() / 2 + pi() * Random) *
+              sin(psi + pi() / 2 + pi() * Random);
+            Light_Array[Strk_L - 1, 5] := PointsArray2[Kt, 2] + 50 *
+              sin(fi777 + pi() / 2 + pi() * Random) *
+              cos(psi + pi() / 2 + pi() * Random);
+            Light_Array[Strk_L - 1, 6] := PointsArray2[Kt, 3] + 50 *
+              cos(fi777 + pi() / 2 + pi() * Random);
+            {
+              Light_Array[Strk_L - 1, 4] := PointsArray2[Kt, 1] + 50 *sin(DegToRad(v + Shag_1)) * sin(DegToRad(Fi + Random_1));
+              Light_Array[Strk_L - 1, 5] := PointsArray2[Kt, 2] + 50 *sin(DegToRad(v + Shag_1)) * cos(DegToRad(Fi + Random_1));
+              Light_Array[Strk_L - 1, 6] := PointsArray2[Kt, 3] + 50 *cos(DegToRad(v + Shag_1));
+            }
+          end;
+        1:
+          ;
+        2:
+          ;
+      end;
+
+      if CheckBox1.Checked then
+        F_Svett := strtoint(Edit2.Text) * Kol_Ist
+      else
+        F_Svett := strtoint(Edit2.Text);
+      F_sv := F_Svett / 1000; { (((159.16 / (n_2 * 2)) * Array_Const[k + 1]) /
+        roundto(Array_Sin[k, 2], 0)) * ((F_Svett / 1000)); }
+      Light_Array[Strk_L - 1, 7] := F_sv;
+
+      Kt := Kt + 1;
+      inc(Strk_L);
+    end
+  end;
+  v := v + d_V;
+
+  {
+    // тип излучения (косинусное, направленно-рассеянное - на будущее)
+    typeOfIliium := 1;
+
+    raysCount := 100000; // high(Light_Array);
+    TriangCount := 3;
 
     if CheckBox1.Checked then
     F_Svett := strtoint(Edit2.Text) * Kol_Ist
     else
     F_Svett := strtoint(Edit2.Text);
 
-    for k := 0 to Floor(180 / d_V) - 1 do
+    k := 1;
+    for i := 0 to TriangCount do
     begin
-    F_sv := (((159.16 / (n_2 * 2)) * Array_Const[k + 1]) /
-    roundto(Array_Sin[k, 2], 0)) * ((F_Svett / 1000));
-    Shag_1 := 0;
-    for k1 := 0 to Floor(roundto(Array_Sin[k, 2], 0)) - 1 do
+    for j := 0 to Floor(raysCount / TriangCount) do
+    // нужно будет исправить, чтоб учитывался размер треугольника
     begin
-    if Kt >= Strk2 - 1 then
-    begin
-    Kt := 0;
-    Random_1 := Random(4);
-    // Random_2:=Random(3);
-    Shag := 5 / Floor((Array_Sin[k, 2]));
-    Shag_1 := Shag_1 + Shag;
+    Randomize;
+    Random_1 := Random;
+    Random_2 := Random;
+    Random_3 := Random;
     // прописываем начало луча - перавая точка треугольника:
-    Light_Array[Strk_L - 1, 1] := PointsArray2[Kt, 1];
-    Light_Array[Strk_L - 1, 2] := PointsArray2[Kt, 2];
-    Light_Array[Strk_L - 1, 3] := PointsArray2[Kt, 3];
+    dx := PointsArray2[i, 8] - PointsArray2[i, 1];
+    dy := PointsArray2[i, 9] - PointsArray2[i, 2];
+    dz := PointsArray2[i, 10] - PointsArray2[i, 3];
+
+    Light_Array[k, 1] := 1;//PointsArray2[i, 1];
+    Light_Array[k, 2] := 1;//PointsArray2[i, 2];
+    Light_Array[k, 3] := 1;//PointsArray2[i, 3];
+    // Считаем вектор нормали:
+    fi777 := ArcCos(dz / sqrt(dx * dx + dy * dy + dz * dz));
+    psi := ArcTan(dx / dy);
     // записываем в массив конец луча  (определяющий по сути направление)
-    Light_Array[Strk_L - 1, 4] := PointsArray2[Kt, 1] + 50 *
-    sin(DegToRad(v + Shag_1)) * sin(DegToRad(Fi + Random_1));
-    Light_Array[Strk_L - 1, 5] := PointsArray2[Kt, 2] + 50 *
-    sin(DegToRad(v + Shag_1)) * cos(DegToRad(Fi + Random_1));
-    Light_Array[Strk_L - 1, 6] := PointsArray2[Kt, 3] + 50 *
-    cos(DegToRad(v + Shag_1));
+    Light_Array[k, 4] := 1;//PointsArray2[i, 1] + 50 * sin(fi777) * sin(psi);
+    Light_Array[k, 5] := 1;//PointsArray2[i, 1] + 50 * sin(fi777) * cos(psi);
+    Light_Array[k, 6] := 1;//PointsArray2[i, 1] + 50 * cos(fi777);
 
-    Light_Array[Strk_L - 1, 7] := F_sv;
+    // Записывваем поток луча:
 
-    Kt := Kt + 1;
-    inc(Strk_L);
-    end
-    else
+    Light_Array[k, 7] :=  1;//F_Svett / raysCount;
+
+    inc(k);
+    end;
+    end;
+    while k < raysCount do // дозаполнить  массив пустыми значениями
     begin
-    Random_1 := Random(4);
-    // Random_2:=Random(3);
-    Shag := 5 / Floor((Array_Sin[k, 2]));
-    Shag_1 := Shag_1 + Shag;
-
-    Light_Array[Strk_L - 1, 1] := PointsArray2[Kt, 1];
-    Light_Array[Strk_L - 1, 2] := PointsArray2[Kt, 2];
-    Light_Array[Strk_L - 1, 3] := PointsArray2[Kt, 3];
-
-    Light_Array[Strk_L - 1, 4] := PointsArray2[Kt, 1] + 50 *
-    sin(DegToRad(v + Shag_1)) * sin(DegToRad(Fi + Random_1));
-    Light_Array[Strk_L - 1, 5] := PointsArray2[Kt, 2] + 50 *
-    sin(DegToRad(v + Shag_1)) * cos(DegToRad(Fi + Random_1));
-    Light_Array[Strk_L - 1, 6] := PointsArray2[Kt, 3] + 50 *
-    cos(DegToRad(v + Shag_1));
-
-    Light_Array[Strk_L - 1, 7] := F_sv;
-
-    Kt := Kt + 1;
-    inc(Strk_L);
+    for i := 0 to 7 do
+    Light_Array[k, i] := 0.00000001;
+    inc(k);
     end;
-    end;
-    v := v + d_V;
-    end; }
+  }
 end;
 
 { TMyThread }
