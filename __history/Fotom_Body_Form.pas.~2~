@@ -1,0 +1,208 @@
+unit Fotom_Body_Form;
+
+interface
+
+uses
+  Windows, Messages, Forms, Classes, Controls, ExtCtrls, ComCtrls,
+  StdCtrls, Dialogs, SysUtils, OpenGL, Vcl.Menus, math;
+
+type
+  TForm6 = class(TForm)
+    procedure FormPaint(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
+    procedure FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
+    procedure FormMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+  private
+    hrc: HGLRC;  // ссылка на контекст воспроизведения
+    DC : HDC;
+      angX, angY, m: GLfloat;          // mouse
+      lastx, lasty: Integer;           // mouse
+      AngX1, AngY1, AngZ1, AngX2, AngY2, AngZ2 : GLfloat;
+      Flag_Pl, Flag_Lu, Flag_All_Lu: Boolean;
+    { Private declarations }
+  public
+    x, y, z:double;
+    F_sv_Summ: double;
+    { Public declarations }
+  end;
+
+var
+  Form6: TForm6;
+    eyex, eyey, eyez,
+    centerx, centery, centerz,
+    upx, upy, upz : GLdouble;
+    Down : Boolean = False;     // для мыши
+
+implementation
+
+{$R *.dfm}
+
+{=======================================================================
+Рисование картинки}
+procedure TForm6.FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+
+end;
+
+procedure TForm6.FormPaint(Sender: TObject);
+var
+i, j, p, p1, i1, k, k1, k2, k3, R: integer;
+summ, xx, yy, zz, rost: double;
+begin
+glClear (GL_COLOR_BUFFER_BIT);      // очистка буфера цвета
+glPushMatrix;
+glScale(m,m,m);
+
+
+
+ // рисование
+
+
+
+
+
+ // конец рисования
+
+
+ glPopMatrix;
+ SwapBuffers(DC);
+end;
+
+{=======================================================================
+Формат пикселя}
+procedure SetDCPixelFormat (hdc : HDC);
+var
+ pfd : TPixelFormatDescriptor;
+ nPixelFormat : Integer;
+begin
+ FillChar (pfd, SizeOf (pfd), 0);
+ pfd.dwFlags  := PFD_DRAW_TO_WINDOW or PFD_SUPPORT_OPENGL or PFD_DOUBLEBUFFER;
+ nPixelFormat := ChoosePixelFormat (hdc, @pfd);
+ SetPixelFormat (hdc, nPixelFormat, @pfd);
+end;
+
+procedure TForm6.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+form1.FormStyle:=fsStayOnTop;
+end;
+
+procedure TForm6.FormCreate(Sender: TObject);
+var
+i:integer;
+begin
+ DC := GetDC (Handle);
+ SetDCPixelFormat(DC);
+ hrc := wglCreateContext(DC);
+ wglMakeCurrent(DC, hrc);
+ glClearColor (0.5, 0.5, 0.75, 1.0); // цвет фона
+// glColor3f (0.0, 0.0, 0.0);          // текущий цвет примитивов
+ glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
+
+ Flag_Pl:=false;
+ Flag_Lu:=false;
+ Flag_All_Lu:=false;
+
+end;
+
+{=======================================================================
+по двойному клику сбрасывается положение}
+procedure TForm6.FormDblClick(Sender: TObject);
+begin
+  Angx2 :=0.0;
+  Angy1 := 0.0;
+  AngX1 := 0;
+  Angy2 := 0.0;
+ formresize(nil);
+end;
+
+procedure TForm6.FormDestroy(Sender: TObject);
+begin
+ wglMakeCurrent(0, 0);
+ wglDeleteContext(hrc);
+ ReleaseDC (Handle, DC);
+ DeleteDC (DC);
+
+end;
+
+ {=======================================================================
+мышь нажата}
+procedure TForm6.FormMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  lastX := X;
+  lasty:=Y;
+  down := True;
+end;
+
+procedure TForm6.FormMouseMove(Sender: TObject; Shift: TShiftState; X,
+  Y: Integer);
+begin
+ If down then
+ begin
+  glRotatef (lastX - X, 0.0, 1.0, 0.0);
+  glRotatef (lasty - y, 1.0, 0.0, 0.0);
+  lastX := X;
+  lasty:= Y;
+  InvalidateRect(Handle, nil, False);
+  caption:='x= '+inttostr(lastx)+' y= '+inttostr(lasty);
+ end;
+end;
+
+ {=======================================================================
+мышь не нажата}
+procedure TForm6.FormMouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  down := False;
+end;
+
+ {=======================================================================
+колесо вниз}
+procedure TForm6.FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+ m := m - 0.03 ;
+ InvalidateRect(Handle, nil, False);
+// formresize(nil);
+end;
+
+
+
+{=======================================================================
+колесо вверх}
+procedure TForm6.FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+ m := m + 0.03 ;
+ InvalidateRect(Handle, nil, False);
+// formresize(nil);
+end;
+
+procedure TForm6.FormResize(Sender: TObject);
+begin
+{ glViewport(0, 0, ClientWidth, ClientHeight);
+ glLoadIdentity;
+ glOrtho (-2, 2, -2, 2, 0, 15.0);  // видовые параметры
+ gluLookAt (eyex, eyey, eyez,
+            centerx, centery, centerz,
+            upx, upy, upz);
+ InvalidateRect(Handle, nil, False);    }
+
+   glViewport(0, 0, ClientWidth, ClientHeight);
+   glLoadIdentity;
+
+
+
+//  glTranslatef (AngX1, AngY1, AngZ1);     // перемешение стрелками
+//  glTranslatef (AngX2, AngY2, AngZ2);
+  InvalidateRect(Handle, nil, False);
+end;
+
+
+
+end.

@@ -1,0 +1,22 @@
+object Frame2: TFrame2
+  Left = 0
+  Top = 0
+  Width = 784
+  Height = 644
+  TabOrder = 0
+  OnDblClick = FrameDblClick
+  OnMouseDown = FrameMouseDown
+  OnMouseMove = FrameMouseMove
+  OnMouseUp = FrameMouseUp
+  OnMouseWheelDown = FrameMouseWheelDown
+  OnMouseWheelUp = FrameMouseWheelUp
+  object CheckBox1: TCheckBox
+    Left = 3
+    Top = 3
+    Width = 62
+    Height = 17
+    Caption = #1047#1072#1083#1080#1074#1082#1072
+    TabOrder = 0
+    Visible = False
+  end
+end

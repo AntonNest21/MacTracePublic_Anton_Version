@@ -1,0 +1,410 @@
+unit Trian_Ist;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Samples.Gauges,  ksTLB, ksConstTLB, math, ComObj;
+
+type
+  TForm4 = class(TForm)
+    Label1: TLabel;
+    Label2: TLabel;
+    Memo1: TMemo;
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    Gauge1: TGauge;
+    Edit1: TEdit;
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+  private
+    { Private declarations }
+  public
+    abort_loop: boolean;
+    { Public declarations }
+  end;
+
+var
+  Form4: TForm4;
+
+implementation
+
+uses unit1;
+{$R *.dfm}
+
+procedure TForm4.Button1Click(Sender: TObject);
+var
+  SelectionMng: ksSelectionMng;         // Интерфейс
+  Entity: ksEntity;                     // Интерфейс
+  FaceDefinition: ksFaceDefinition;     // Интерфейс
+  Surface: ksSurface;                   // Интерфейс
+  Tessellation: ksTessellation;         // Интерфейс
+  ChooseMng: ksChooseMng;              // Интерфейс менеджера выбора (подсветки)
+  Facet: ksFacet;                      // Интерфейс траингуляционной пластины
+  BodyCollection: ksBodyCollection;
+  Body: ksBody;
+  FaceCollection: ksFaceCollection;
+  ColorParam : ksColorParam   ;
+
+//---------------------ПЕРЕМЕННЫЕ----------------------
+Gx1, Gy1, Gz1, Gx2, Gy2, Gz2, GabX, GabY, GabZ, FacetSize, Mnoj,          // Для маштабирования траингуляции
+amb, diff, specul, shin, transp, emis: Double;
+k, i, j, i0, Flag006, FlagPr, i02: Integer;
+nVertexPlast, nPlast, nVertex, color, n_Gran, n_gran_t: integer;       // nPlast - Кол-во траингуляционных пластин
+x1, y1, z1,
+x2, y2, z2,
+x3, y3, z3: single;                              // Координаты вершины в пластине
+GabArray : Array[0..3] of Double;
+Matrix: OleVariant;
+e1x, e1y, e1z, e2x, e2y, e2z: double;
+//---------------------ПРОЦЕДУРА----------------------
+begin
+  // Получаем интерфейс менеджера выбора (подсветки)
+ChooseMng:=ksChooseMng(Document3D.GetChooseMng);
+  // Получаем интерфейс менеджера выделенных объектов (подсветки)
+SelectionMng:=ksSelectionMng(Document3D.GetSelectionMng);
+Strk2:=0;
+ChooseMng.UnChooseAll;
+memo1.Clear;
+abort_loop:=true;
+  for I := 0 to SelectionMng.GetCount-1 do
+  begin
+  Entity:=ksEntity(SelectionMng.GetObjectByIndex(i));
+  FlagPr:=Entity.type_;
+    if (FlagPr = 6) then
+      begin
+       FaceDefinition:=ksFaceDefinition(Entity.GetDefinition);
+         Surface:=ksSurface(FaceDefinition.GetSurface);
+         Tessellation:=ksTessellation(FaceDefinition.GetTessellation);
+         Facet:=ksFacet(Tessellation.GetFacet());
+           Surface.GetGabarit(Gx1, Gy1, Gz1, Gx2, Gy2, Gz2);            // Получение габаритного паралепипеда
+           GabArray[0]:=abs(Gx1-Gx2);                                   // Расчет габарита по X
+           GabArray[1]:=abs(Gy1-Gy2);                                   // Расчет габарита по Y
+           GabArray[2]:=abs(Gz1-Gz2);                                   // Расчет габарита по Z
+           FacetSize:= MaxValue(GabArray);                              // Наибольшее значение
+            Tessellation.SetFacetSize(0);
+            Tessellation.SetFacetSize(FacetSize*(strtofloat(edit1.Text)/100));
+            nVertex:=Tessellation.GetPointsCount;
+            Strk2 := Strk2 + nVertex;
+            inc(n_Gran);
+      end;
+    if (FlagPr <> 6) then
+      begin
+      Matrix:=part.GetSummMatrix(Entity.GetParent());
+       BodyCollection:= ksBodyCollection(Entity.BodyCollection);
+         Body:= ksBody(BodyCollection.GetByIndex(0));
+         FaceCollection:= ksFaceCollection(Body.FaceCollection);
+         for I02 := 0 to FaceCollection.GetCount - 1 do
+          begin
+            FaceDefinition:= ksFaceDefinition(FaceCollection.GetByIndex(i02));
+            Surface:=ksSurface(FaceDefinition.GetSurface);                 // Получаем интерфейс математической поверхности
+            Tessellation:=ksTessellation(FaceDefinition.GetTessellation);  // Получаем интерфейс траиноуляции выбранной грани
+            Facet:=ksFacet(Tessellation.GetFacet());
+            Tessellation.SetFacetSize(0);
+            nVertex:=Tessellation.GetPointsCount;
+            Strk2 := Strk2 + nVertex;
+            inc(n_Gran);
+          end;
+      end;
+  end;
+//            showmessage(inttostr(Strk2));
+            gauge1.MinValue:=0;
+            gauge1.MaxValue:=n_Gran;
+            n_gran_t:=1;
+
+SetLength(PointsArray2, Strk2*10, 15);
+Strk2 := 3;
+
+
+
+ for I := 0 to SelectionMng.GetCount-1 do
+ begin
+  Entity:=ksEntity(SelectionMng.GetObjectByIndex(i));
+  FlagPr:=Entity.type_;
+    if (FlagPr = 6) then
+      begin
+      Entity:=ksEntity(SelectionMng.GetObjectByIndex(i));
+      part := ksPart(Entity.GetParent);
+      Matrix:=part.GetSummMatrix(Entity.GetParent());
+         FaceDefinition:=ksFaceDefinition(Entity.GetDefinition) ;
+         Surface:=ksSurface(FaceDefinition.GetSurface);                 // Получаем интерфейс математической поверхности
+         Tessellation:=ksTessellation(FaceDefinition.GetTessellation);  // Получаем интерфейс траиноуляции выбранной грани
+         Facet:=ksFacet(Tessellation.GetFacet());                       // Получаем интерфейс траингуляционной пластины
+            Surface.GetGabarit(Gx1, Gy1, Gz1, Gx2, Gy2, Gz2);            // Получение габаритного паралепипеда
+            GabArray[0]:=abs(Gx1-Gx2);                                   // Расчет габарита по X
+            GabArray[1]:=abs(Gy1-Gy2);                                   // Расчет габарита по Y
+            GabArray[2]:=abs(Gz1-Gz2);                                   // Расчет габарита по Z
+            FacetSize:= MaxValue(GabArray);                              // Наибольшее значение
+            Tessellation.SetFacetSize(0);
+            Tessellation:=ksTessellation(FaceDefinition.GetTessellation);  // Получаем интерфейс траиноуляции выбранной грани
+             Tessellation.SetFacetSize(FacetSize*(strtofloat(edit1.Text)/100));
+              nPlast:=Tessellation.GetFacetsCount;                         // Кол-во траингуляционных пластин
+              nVertex:=Tessellation.GetPointsCount;                        // Кол-во вершин на ГРАНИ
+              //showmessage(inttostr(nVertex));
+      //------------------------- НАЧАЛО ЦИКЛА ТРАИНГУЛЯЦИИ ОДНОЙ ГРАНИ ----------------------
+        for j := 0 to nPlast-1 do                                     // Цикл перебора пластин
+        begin
+        Tessellation.GetFacetData(j, Facet);                          // ПОЛУЧАЕМ данные ВЫБРАННОЙ пластины
+        Application.ProcessMessages;
+          if (Facet.GetPointsCount = 3) then                              // Кол-во вершин в ТРАИНГУЛЯЦИОННОЙ ПЛАСТИНЕ - Facet.GetPointsCount
+          begin
+            if abort_loop then
+            begin
+              Facet.GetPoint(0, x1, y1, z1);                           // ПОЛУЧЕНИЕ КООРДИНАТЫ ВЕРШИНЫ 1
+              Facet.GetPoint(1, x2, y2, z2);                           // ПОЛУЧЕНИЕ КООРДИНАТЫ ВЕРШИНЫ 2
+              Facet.GetPoint(2, x3, y3, z3);                           // ПОЛУЧЕНИЕ КООРДИНАТЫ ВЕРШИНЫ 3
+            ColorParam:=ksColorParam(part.ColorParam);
+
+                PointsArray2[Strk2-3, 1]:=RoundTo((x1*matrix[0]){+(y*matrix[4])+(z*matrix[8])}+(1*matrix[12]), -4);     // Матрица преобразования 1
+                PointsArray2[Strk2-3, 2]:={(x*matrix[1])+}RoundTo((y1*matrix[5]){+(z*matrix[9])}+(1*matrix[13]), -4);   // Матрица преобразования 1
+                PointsArray2[Strk2-3, 3]:={(x*matrix[2])+(y*matrix[6])+}RoundTo((z1*matrix[10])+(1*matrix[14]), -4);    // Матрица преобразования 1
+
+                PointsArray2[Strk2-2, 1]:=RoundTo((x2*matrix[0]){+(y*matrix[4])+(z*matrix[8])}+(1*matrix[12]), -4);     // Матрица преобразования 2
+                PointsArray2[Strk2-2, 2]:={(x*matrix[1])+}RoundTo((y2*matrix[5]){+(z*matrix[9])}+(1*matrix[13]), -4);   // Матрица преобразования 2
+                PointsArray2[Strk2-2, 3]:={(x*matrix[2])+(y*matrix[6])+}RoundTo((z2*matrix[10])+(1*matrix[14]), -4);    // Матрица преобразования 2
+
+                PointsArray2[Strk2-1, 1]:=RoundTo((x3*matrix[0]){+(y*matrix[4])+(z*matrix[8])}+(1*matrix[12]), -4);     // Матрица преобразования 3
+                PointsArray2[Strk2-1, 2]:={(x*matrix[1])+}RoundTo((y3*matrix[5]){+(z*matrix[9])}+(1*matrix[13]), -4);   // Матрица преобразования 3
+                PointsArray2[Strk2-1, 3]:={(x*matrix[2])+(y*matrix[6])+}RoundTo((z3*matrix[10])+(1*matrix[14]), -4);    // Матрица преобразования 3
+            //------------------------------НОРМАЛЬ--------------------------------
+            e1x:=PointsArray2[Strk2-2, 1]-PointsArray2[Strk2-3, 1];
+            e1y:=PointsArray2[Strk2-2, 2]-PointsArray2[Strk2-3, 2];
+            e1z:=PointsArray2[Strk2-2, 3]-PointsArray2[Strk2-3, 3];
+
+            e2x:=PointsArray2[Strk2-1, 1]-PointsArray2[Strk2-3, 1];
+            e2y:=PointsArray2[Strk2-1, 2]-PointsArray2[Strk2-3, 2];
+            e2z:=PointsArray2[Strk2-1, 3]-PointsArray2[Strk2-3, 3];
+
+            PointsArray2[Strk2-3, 8]:=(e1y*e2z)-(e1z*e2y);
+
+            PointsArray2[Strk2-3, 9]:=(e1z*e2x)-(e1x*e2z);
+
+            PointsArray2[Strk2-3, 10]:=(e1x*e2y)-(e1y*e2x);
+
+            PointsArray2[Strk2-3, 11]:=  (PointsArray2[Strk2-3, 8]* PointsArray2[Strk2-3, 1])+
+                                         (PointsArray2[Strk2-3, 9]* PointsArray2[Strk2-3, 2])+
+                                         (PointsArray2[Strk2-3, 10]*PointsArray2[Strk2-3, 3]);
+            //------------------------------НОРМАЛЬ--------------------------------
+            PointsArray2[Strk2-3, 5]:=(ColorParam.specularity);
+            PointsArray2[Strk2-3, 6]:=(ColorParam.diffuse);
+            PointsArray2[Strk2-3, 7]:=(ColorParam.transparency);
+
+            PointsArray2[Strk2-3, 4]:=2;
+
+
+            Strk2:=Strk2+3;                                                                         // Приращение строк в массиве
+   //         SetLength(PointsArray, Strk, 15);
+            end
+            else
+            begin
+            gauge1.Progress:=0;
+            exit;
+            end;
+
+          end
+          else
+          begin
+          showmessage('Траингуляционная пластина имеет больше 3 вершин');
+          exit;
+          end;
+        end;
+      gauge1.Progress:=n_gran_t;
+      inc(n_gran_t);
+      end;
+
+
+
+    if (FlagPr <> 6) then
+      begin
+      Matrix:=part.GetSummMatrix(Entity.GetParent());
+      BodyCollection:= ksBodyCollection(Entity.BodyCollection);
+      Body:= ksBody(BodyCollection.GetByIndex(0));
+      FaceCollection:= ksFaceCollection(Body.FaceCollection);
+        for I02 := 0 to FaceCollection.GetCount - 1 do
+        begin
+        FaceDefinition:= ksFaceDefinition(FaceCollection.GetByIndex(i02));
+        Tessellation:=ksTessellation(FaceDefinition.GetTessellation);  // Получаем интерфейс траиноуляции выбранной грани
+        Facet:=ksFacet(Tessellation.GetFacet());
+          Surface.GetGabarit(Gx1, Gy1, Gz1, Gx2, Gy2, Gz2);            // Получение габаритного паралепипеда
+          GabArray[0]:=abs(Gx1-Gx2);                                   // Расчет габарита по X
+          GabArray[1]:=abs(Gy1-Gy2);                                   // Расчет габарита по Y
+          GabArray[2]:=abs(Gz1-Gz2);                                   // Расчет габарита по Z
+          FacetSize:= MaxValue(GabArray);                              // Наибольшее значение
+          Tessellation.SetFacetSize(0);
+          Tessellation:=ksTessellation(FaceDefinition.GetTessellation);  // Получаем интерфейс траиноуляции выбранной грани
+          Tessellation.SetFacetSize(FacetSize);
+          nPlast:=Tessellation.GetFacetsCount;                         // Кол-во траингуляционных пластин
+          nVertex:=Tessellation.GetPointsCount;                        // Кол-во вершин на ГРАНИ
+        //------------------------- НАЧАЛО ЦИКЛА ТРАИНГУЛЯЦИИ ОДНОЙ ГРАНИ ----------------------
+          for j := 0 to nPlast-1 do                                     // Цикл перебора пластин
+          begin
+          Tessellation.GetFacetData(j, Facet);                          // ПОЛУЧАЕМ данные ВЫБРАННОЙ пластины
+          Application.ProcessMessages;                                  // Что-бы окно было активным
+                   //  Facet.GetPoint(j, x, y, z);
+            if (Facet.GetPointsCount = 3)                               // Кол-во вершин в ТРАИНГУЛЯЦИОННОЙ ПЛАСТИНЕ - Facet.GetPointsCount
+            then
+            begin
+              if abort_loop then
+              begin
+              Facet.GetPoint(0, x1, y1, z1);                           // ПОЛУЧЕНИЕ КООРДИНАТЫ ВЕРШИНЫ 1
+              Facet.GetPoint(1, x2, y2, z2);                           // ПОЛУЧЕНИЕ КООРДИНАТЫ ВЕРШИНЫ 2
+              Facet.GetPoint(2, x3, y3, z3);                           // ПОЛУЧЕНИЕ КООРДИНАТЫ ВЕРШИНЫ 3
+                ColorParam:=ksColorParam(part.ColorParam);
+
+              PointsArray2[Strk2-3, 1]:=RoundTo((x1*matrix[0]){+(y*matrix[4])+(z*matrix[8])}+(1*matrix[12]), -4);     // Матрица преобразования 1
+              PointsArray2[Strk2-3, 2]:={(x*matrix[1])+}RoundTo((y1*matrix[5]){+(z*matrix[9])}+(1*matrix[13]), -4);   // Матрица преобразования 1
+              PointsArray2[Strk2-3, 3]:={(x*matrix[2])+(y*matrix[6])+}RoundTo((z1*matrix[10])+(1*matrix[14]), -4);    // Матрица преобразования 1
+
+              PointsArray2[Strk2-2, 1]:=RoundTo((x2*matrix[0]){+(y*matrix[4])+(z*matrix[8])}+(1*matrix[12]), -4);     // Матрица преобразования 2
+              PointsArray2[Strk2-2, 2]:={(x*matrix[1])+}RoundTo((y2*matrix[5]){+(z*matrix[9])}+(1*matrix[13]), -4);   // Матрица преобразования 2
+              PointsArray2[Strk2-2, 3]:={(x*matrix[2])+(y*matrix[6])+}RoundTo((z2*matrix[10])+(1*matrix[14]), -4);    // Матрица преобразования 2
+
+              PointsArray2[Strk2-1, 1]:=RoundTo((x3*matrix[0]){+(y*matrix[4])+(z*matrix[8])}+(1*matrix[12]), -4);     // Матрица преобразования 3
+              PointsArray2[Strk2-1, 2]:={(x*matrix[1])+}RoundTo((y3*matrix[5]){+(z*matrix[9])}+(1*matrix[13]), -4);   // Матрица преобразования 3
+              PointsArray2[Strk2-1, 3]:={(x*matrix[2])+(y*matrix[6])+}RoundTo((z3*matrix[10])+(1*matrix[14]), -4);    // Матрица преобразования 3
+              //------------------------------НОРМАЛЬ--------------------------------
+              e1x:=PointsArray2[Strk2-2, 1]-PointsArray2[Strk2-3, 1];
+              e1y:=PointsArray2[Strk2-2, 2]-PointsArray2[Strk2-3, 2];
+              e1z:=PointsArray2[Strk2-2, 3]-PointsArray2[Strk2-3, 3];
+
+              e2x:=PointsArray2[Strk2-1, 1]-PointsArray2[Strk2-3, 1];
+              e2y:=PointsArray2[Strk2-1, 2]-PointsArray2[Strk2-3, 2];
+              e2z:=PointsArray2[Strk2-1, 3]-PointsArray2[Strk2-3, 3];
+
+              PointsArray2[Strk2-3, 8]:=(e1y*e2z)-(e1z*e2y);
+
+              PointsArray2[Strk2-3, 9]:=(e1z*e2x)-(e1x*e2z);
+
+              PointsArray2[Strk2-3, 10]:=(e1x*e2y)-(e1y*e2x);
+
+              PointsArray2[Strk2-3, 11]:=  (PointsArray2[Strk2-3, 8]* PointsArray2[Strk2-3, 1])+
+                                           (PointsArray2[Strk2-3, 9]* PointsArray2[Strk2-3, 2])+
+                                           (PointsArray2[Strk2-3, 10]*PointsArray2[Strk2-3, 3]);
+              //------------------------------НОРМАЛЬ--------------------------------
+              PointsArray2[Strk2-3, 5]:=(ColorParam.specularity);
+              PointsArray2[Strk2-3, 6]:=(ColorParam.diffuse);
+              PointsArray2[Strk2-3, 7]:=(ColorParam.transparency);
+
+              PointsArray2[Strk2-3, 4]:=2;
+
+
+
+              Strk2:=Strk2+3;
+                                                                                    // Приращение строк в массиве
+      //        SetLength(PointsArray, Strk, 15);
+              end
+              else
+              begin
+              exit;
+              end;
+            end
+            else
+            begin
+            showmessage('Траингуляционная пластина имеет больше 3 вершин');
+            exit;
+            end;
+          end;
+        gauge1.Progress:=n_gran_t;
+        inc(n_gran_t);
+        end;
+      end;
+ end;
+
+ Strk2:=Strk2-3;
+ SetLength(PointsArray2, Strk2, 15);
+
+// showmessage(inttostr(Strk2));
+end;
+
+procedure TForm4.Button2Click(Sender: TObject);
+begin
+abort_loop:=FALSE;
+end;
+
+procedure TForm4.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+var
+index, i, j, k: integer;
+begin
+Strk_ALL:=1;
+SetLength(Points_ALL, Strk + Strk2 + Strk_p+1, 15);
+  for j := 0 to Strk2-1 do
+  begin
+    Points_ALL[Strk_ALL-1, 1]:=PointsArray2[j, 1];
+    Points_ALL[Strk_ALL-1, 2]:=PointsArray2[j, 2];
+    Points_ALL[Strk_ALL-1, 3]:=PointsArray2[j, 3];
+    Points_ALL[Strk_ALL-1, 4]:=PointsArray2[j, 4];
+    Points_ALL[Strk_ALL-1, 5]:=PointsArray2[j, 5];
+    Points_ALL[Strk_ALL-1, 6]:=PointsArray2[j, 6];
+    Points_ALL[Strk_ALL-1, 7]:=PointsArray2[j, 7];
+    Points_ALL[Strk_ALL-1, 8]:=0;
+    Points_ALL[Strk_ALL-1, 8]:=PointsArray2[j, 8];
+    Points_ALL[Strk_ALL-1, 9]:=PointsArray2[j, 9];
+    Points_ALL[Strk_ALL-1, 10]:=PointsArray2[j, 10];
+    Points_ALL[Strk_ALL-1, 11]:=PointsArray2[j, 11];
+    Points_ALL[Strk_ALL-1, 12]:=0;
+
+    inc(Strk_ALL);
+//    SetLength(Points_ALL, Strk_ALL, 15);
+  end;
+
+  if PointsArray = nil then
+  begin
+  end
+  else
+  begin
+    for i := 0 to Strk-1 do
+    begin
+    Points_ALL[Strk_ALL-1, 1]:=PointsArray[i, 1];
+    Points_ALL[Strk_ALL-1, 2]:=PointsArray[i, 2];
+    Points_ALL[Strk_ALL-1, 3]:=PointsArray[i, 3];
+    Points_ALL[Strk_ALL-1, 4]:=PointsArray[i, 4];
+    Points_ALL[Strk_ALL-1, 5]:=PointsArray[i, 5];
+    Points_ALL[Strk_ALL-1, 6]:=PointsArray[i, 6];
+    Points_ALL[Strk_ALL-1, 7]:=PointsArray[i, 7];
+    Points_ALL[Strk_ALL-1, 8]:=0;
+    Points_ALL[Strk_ALL-1, 8]:=PointsArray[i, 8];
+    Points_ALL[Strk_ALL-1, 9]:=PointsArray[i, 9];
+    Points_ALL[Strk_ALL-1, 10]:=PointsArray[i, 10];
+    Points_ALL[Strk_ALL-1, 11]:=PointsArray[i, 11];
+    Points_ALL[Strk_ALL-1, 12]:=0;
+
+    inc(Strk_ALL);
+//    SetLength(Points_ALL, Strk_ALL, 15);
+    end;
+  end;
+
+  if Plosk_Array = nil then
+  begin
+  end
+  else
+  begin
+    for k := 0 to Strk_p-1 do
+    begin
+    Points_ALL[Strk_ALL-1, 1]:=Plosk_Array[k, 1];
+    Points_ALL[Strk_ALL-1, 2]:=Plosk_Array[k, 2];
+    Points_ALL[Strk_ALL-1, 3]:=Plosk_Array[k, 3];
+    Points_ALL[Strk_ALL-1, 4]:=Plosk_Array[k, 4];
+    Points_ALL[Strk_ALL-1, 8]:=Plosk_Array[k, 8];
+    Points_ALL[Strk_ALL-1, 5]:=Plosk_Array[k, 5];
+    Points_ALL[Strk_ALL-1, 6]:=Plosk_Array[k, 6];
+    Points_ALL[Strk_ALL-1, 7]:=Plosk_Array[k, 7];
+    Points_ALL[Strk_ALL-1, 8]:=Plosk_Array[k, 8];
+    Points_ALL[Strk_ALL-1, 9]:=Plosk_Array[k, 9];
+    Points_ALL[Strk_ALL-1, 10]:=Plosk_Array[k, 10];
+    Points_ALL[Strk_ALL-1, 11]:=Plosk_Array[k, 11];
+    Points_ALL[Strk_ALL-1, 12]:=Plosk_Array[k, 12];
+
+    inc(Strk_ALL);
+//    SetLength(Points_ALL, Strk_ALL, 15);
+    end;
+  end;
+
+
+    dec(Strk_ALL);
+    SetLength(Points_ALL, Strk_ALL, 15);
+form1.Frame21.Render;
+end;
+
+end.
