@@ -11,10 +11,8 @@ object Form1: TForm1
   Font.Name = 'Tahoma'
   Font.Style = []
   Menu = MainMenu1
-  OldCreateOrder = True
   Position = poDesigned
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
     Left = 8
@@ -345,6 +343,8 @@ object Form1: TForm1
         Text = 'Progress'
         Width = 50
       end>
+    ExplicitTop = 547
+    ExplicitWidth = 915
   end
   object Button4: TButton
     Left = 168
@@ -358,7 +358,7 @@ object Form1: TForm1
   object btReconnect: TButton
     Left = 8
     Top = 41
-    Width = 306
+    Width = 160
     Height = 32
     Caption = #1055#1077#1088#1077#1087#1086#1076#1082#1083#1102#1095#1080#1090#1100#1089#1103' '#1082' '#1082#1086#1084#1087#1072#1089
     Font.Charset = DEFAULT_CHARSET

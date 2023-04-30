@@ -2,7 +2,7 @@
   Left = 0
   Top = 0
   Caption = 'Form3'
-  ClientHeight = 264
+  ClientHeight = 350
   ClientWidth = 950
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -10,8 +10,10 @@
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
+  PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
     Left = 8
@@ -40,7 +42,7 @@
     Progress = 0
   end
   object Label2: TLabel
-    Left = 367
+    Left = 415
     Top = 167
     Width = 37
     Height = 16
@@ -94,7 +96,7 @@
     OnClick = ОтменаClick
   end
   object Edit1: TEdit
-    Left = 296
+    Left = 344
     Top = 167
     Width = 65
     Height = 48
@@ -109,8 +111,8 @@
     Text = '25'
   end
   object Memo1: TMemo
-    Left = 8
-    Top = 167
+    Left = 152
+    Top = 266
     Width = 49
     Height = 31
     Lines.Strings = (
@@ -119,10 +121,10 @@
     Visible = False
   end
   object Button3: TButton
-    Left = 480
-    Top = 167
-    Width = 233
-    Height = 77
+    Left = 344
+    Top = 239
+    Width = 249
+    Height = 104
     Caption = #1057#1090#1072#1088#1090
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
