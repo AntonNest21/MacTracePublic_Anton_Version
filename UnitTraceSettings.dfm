@@ -10,8 +10,6 @@ object fmTraceSettings: TfmTraceSettings
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
-  PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
     Left = 175
@@ -55,5 +53,6 @@ object fmTraceSettings: TfmTraceSettings
       '1 '#1090#1088#1072#1089#1089#1080#1088#1086#1074#1082#1072' '#1073#1072#1079#1072
       '2 '#1090#1088#1072#1089#1089#1080#1088#1086#1074#1082#1072' '#1090#1077#1089#1090)
     TabOrder = 2
+    OnExit = RadioGroup1Exit
   end
 end

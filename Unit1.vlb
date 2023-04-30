@@ -10,17 +10,11 @@ Coordinates=382,270,81,36
 [CheckBox1]
 Coordinates=107,146,114,58
 
-[Edit1]
-Coordinates=186,78,44,58
-
 [OpenDialog1]
 Coordinates=623,1,90,36
 
 [_KSS]
 Coordinates=127,78,49,58
-
-[Button1]
-Coordinates=10,282,59,58
 
 [Edit3]
 Coordinates=73,78,44,58
@@ -64,9 +58,6 @@ Coordinates=447,146,53,58
 
 [Frame21.CheckBox1]
 Coordinates=383,214,135,58
-
-[Button3]
-Coordinates=10,10,59,58
 
 [Edit2]
 Coordinates=314,78,44,58
@@ -166,4 +157,13 @@ Coordinates=386,282,92,36
 
 [rbDeg0_180]
 Coordinates=138,282,92,36
+
+[btHideFB]
+Coordinates=10,282,59,58
+
+[btCancel]
+Coordinates=10,10,59,58
+
+[edCountRays]
+Coordinates=186,78,44,58
 

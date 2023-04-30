@@ -1,33 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.875,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\KSS_Form.dfm=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit5.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.441,C:\p3\MacTracePublic\main.pas=C:\p3\MacTracePublic\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.583,C:\Users\yaale\OneDrive\Дисертация\2.0 Програмный комплекс для расчета светораспределения ОП\Unit1.pas=C:\Users\yaale\OneDrive\Документы\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.875,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\KSS_Form.pas=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit5.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.513,C:\p3\MacTracePublic\Unit2.pas=C:\p3\MacTracePublic\second.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.832,C:\p3\MacTracePublic\second.pas=C:\p3\MacTracePublic\Unit2.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.895,C:\Users\yaale\OneDrive\Дисертация\2.0 Програмный комплекс для расчета светораспределения ОП\Project1.dproj=C:\Users\yaale\OneDrive\Документы\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.296,=C:\Users\yaale\OneDrive\Документы\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.998,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Trian_Ist.pas=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit4.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.607,=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit6.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.918,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit6.pas=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Fotom_Body_Form.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.853,C:\Users\m\Desktop\ПРОГРАММА МИРОНОВ\MAscTrace.002\Unit6.dfm=C:\Users\m\Desktop\ПРОГРАММА МИРОНОВ\MAscTrace.002\UnitTraceSettings.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.662,=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit5.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.703,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Trian_Otr.pas=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit3.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.949,=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit3.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.607,=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit6.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.123,C:\p3\MacTracePublic\Unit1.dfm=C:\p3\MacTracePublic\main.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.583,C:\Users\yaale\OneDrive\Дисертация\2.0 Програмный комплекс для расчета светораспределения ОП\Unit1.dfm=C:\Users\yaale\OneDrive\Документы\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.123,C:\p3\MacTracePublic\Unit1.pas=C:\p3\MacTracePublic\main.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.513,C:\p3\MacTracePublic\Unit2.dfm=C:\p3\MacTracePublic\second.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.998,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Trian_Ist.dfm=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit4.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.832,C:\p3\MacTracePublic\second.dfm=C:\p3\MacTracePublic\Unit2.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.244,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Project1.dproj=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.763,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Project1.dproj=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.892,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Project1.dproj=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.596,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Fotom_Body_Form.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.532,=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit4.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.703,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Trian_Otr.dfm=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit3.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.475,C:\Users\yaale\OneDrive\Дисертация\2.0 Програмный комплекс для расчета светораспределения ОП\Unit2.dfm=C:\Users\yaale\OneDrive\Документы\Embarcadero\Studio\Projects\Unit2.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.441,C:\p3\MacTracePublic\main.dfm=C:\p3\MacTracePublic\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.597,=C:\Users\yaale\OneDrive\Документы\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.394,=C:\Users\m\Desktop\ПРОГРАММА МИРОНОВ\MAscTrace.002\Unit6.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.853,C:\Users\m\Desktop\ПРОГРАММА МИРОНОВ\MAscTrace.002\Unit6.pas=C:\Users\m\Desktop\ПРОГРАММА МИРОНОВ\MAscTrace.002\UnitTraceSettings.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.918,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit6.dfm=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Fotom_Body_Form.dfm</Transaction>
     <Transaction>1899.12.30 00:00:00.000.475,C:\Users\yaale\OneDrive\Дисертация\2.0 Програмный комплекс для расчета светораспределения ОП\Unit2.pas=C:\Users\yaale\OneDrive\Документы\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.918,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit6.pas=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Fotom_Body_Form.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.662,=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit5.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.597,=C:\Users\yaale\OneDrive\Документы\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.475,C:\Users\yaale\OneDrive\Дисертация\2.0 Програмный комплекс для расчета светораспределения ОП\Unit2.dfm=C:\Users\yaale\OneDrive\Документы\Embarcadero\Studio\Projects\Unit2.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.703,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Trian_Otr.dfm=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit3.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.583,C:\Users\yaale\OneDrive\Дисертация\2.0 Програмный комплекс для расчета светораспределения ОП\Unit1.dfm=C:\Users\yaale\OneDrive\Документы\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.853,C:\Users\m\Desktop\ПРОГРАММА МИРОНОВ\MAscTrace.002\Unit6.dfm=C:\Users\m\Desktop\ПРОГРАММА МИРОНОВ\MAscTrace.002\UnitTraceSettings.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.596,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Fotom_Body_Form.pas=</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.895,C:\Users\yaale\OneDrive\Дисертация\2.0 Програмный комплекс для расчета светораспределения ОП\Project1.dproj=C:\Users\yaale\OneDrive\Документы\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.296,=C:\Users\yaale\OneDrive\Документы\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.892,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Project1.dproj=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Project1.dproj</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.244,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Project1.dproj=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Project1.dproj</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.763,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Project1.dproj=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Project1.dproj</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.875,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\KSS_Form.dfm=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit5.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.532,=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit4.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.998,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Trian_Ist.pas=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit4.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.394,=C:\Users\m\Desktop\ПРОГРАММА МИРОНОВ\MAscTrace.002\Unit6.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.998,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Trian_Ist.dfm=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit4.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.583,C:\Users\yaale\OneDrive\Дисертация\2.0 Програмный комплекс для расчета светораспределения ОП\Unit1.pas=C:\Users\yaale\OneDrive\Документы\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.875,C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\KSS_Form.pas=C:\Users\yaale\OneDrive\Дисертация\2.1 Програмный комплекс для расчета светораспределения ОП\Unit5.pas</Transaction>
-  </Transactions>  <ProjectSortOrder AutoSort="0" SortType="0">
+  </Transactions>
+	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="KSS_Form.pas"/>
     <File Path="KSS_Form.dfm"/>
     <File Path="Trian_Ist.pas"/>

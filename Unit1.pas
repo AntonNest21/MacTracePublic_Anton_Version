@@ -29,7 +29,7 @@ type
     N8: TMenuItem;
     N9: TMenuItem;
     N10: TMenuItem; //
-    Edit1: TEdit;
+    edCountRays: TEdit;
     Label1: TLabel;
     Edit2: TEdit;
     CheckBox1: TCheckBox;
@@ -115,6 +115,7 @@ type
     procedure Button7Click(Sender: TObject);
     procedure N23Click(Sender: TObject);
     procedure Frame21Click(Sender: TObject);
+    procedure edCountRaysChange(Sender: TObject);
 
   private
     n_cell_col: integer;
@@ -308,6 +309,11 @@ begin
   result[2] := n_x;
   result[3] := n_y;
   result[4] := n_z;
+end;
+
+procedure TForm1.edCountRaysChange(Sender: TObject);
+begin
+
 end;
 
 // Расчет вектора отражения
@@ -1436,23 +1442,25 @@ begin
   // n_2 := 3;             //50
 
   // определяем шаг градусов для вычисления?  n*n_2 - колво лучей источника
-  if strtoint(Edit1.Text) < 15000 then // Количество лучей
+  if strtoint(edCountRays.Text) < 15000 then // Количество лучей
   begin
     n_2 := 40;
     n := ceil(15000 / 40);
+    //n := ceil(strtoint(edCountRays.Text) / 40);
+    //showMessage(inttostr(n));
   end
   else
   begin
     n_2 := 45;
-    n := ceil(strtoint(Edit1.Text) / n_2);
-    if strtoint(Edit1.Text) > 299000 then
+    n := ceil(strtoint(edCountRays.Text) / n_2);
+    if strtoint(edCountRays.Text) > 299000 then
     begin
       n_2 := 60;
-      n := ceil(strtoint(Edit1.Text) / n_2);
-      if strtoint(Edit1.Text) > 499000 then
+      n := ceil(strtoint(edCountRays.Text) / n_2);
+      if strtoint(edCountRays.Text) > 499000 then
       begin
         n_2 := 90;
-        n := ceil(strtoint(Edit1.Text) / n_2);
+        n := ceil(strtoint(edCountRays.Text) / n_2);
       end;
     end;
 
@@ -1469,17 +1477,8 @@ begin
   for i := 0 to (n_2 - 1) do
   begin
     Application.ProcessMessages;
-    // showMessage(inttostr(fmTraceSettings.radiogroup1.itemindex));
-    case fmTraceSettings.radiogroup1.itemindex of
-      - 1:
-        ;
-      0:
-        Fibanachi_V(n, n_2, Fi);
-      1:
-       Fibanachi_V(n, n_2, Fi);
-        2:
-       Fibanachi_V(n, n_2, Fi);
-    end;
+
+    Fibanachi_V(n, n_2, Fi);
 
     Fi := Fi + d_Fi;
     Gauge1.Progress := i + 1;

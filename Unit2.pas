@@ -82,7 +82,7 @@ var
   Flag_Render: Integer;
 implementation
 
-uses unit1;
+uses Unit1;
 {$R *.dfm}
 
 procedure TFrame2.AppEventsIdle(Sender: TObject; var Done: Boolean);

@@ -13,6 +13,7 @@ type
     Beta: TEdit;
     Label2: TLabel;
     RadioGroup1: TRadioGroup;
+    procedure RadioGroup1Exit(Sender: TObject);
   private
     { Private declarations }
   public
@@ -25,5 +26,10 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TfmTraceSettings.RadioGroup1Exit(Sender: TObject);
+begin
+ showMessage(inttostr(fmTraceSettings.radiogroup1.itemindex));
+end;
 
 end.

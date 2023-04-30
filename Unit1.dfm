@@ -126,7 +126,7 @@ object Form1: TForm1
   object btTrassirovka: TButton
     Left = 8
     Top = 188
-    Width = 193
+    Width = 185
     Height = 49
     Caption = #1058#1088#1072#1089#1089#1080#1088#1086#1074#1082#1072
     Font.Charset = DEFAULT_CHARSET
@@ -147,7 +147,7 @@ object Form1: TForm1
     TabOrder = 2
     OnClick = _LuchClick
   end
-  object Edit1: TEdit
+  object edCountRays: TEdit
     Left = 143
     Top = 146
     Width = 161
@@ -161,6 +161,7 @@ object Form1: TForm1
     ParentFont = False
     TabOrder = 3
     Text = '100000'
+    OnChange = edCountRaysChange
   end
   object Edit2: TEdit
     Left = 188
