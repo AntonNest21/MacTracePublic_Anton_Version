@@ -1476,9 +1476,9 @@ begin
       0:
         Fibanachi_V(n, n_2, Fi);
       1:
-        begin
-          Fibanachi_V_m(n, n_2, Fi);
-        end;
+       Fibanachi_V(n, n_2, Fi);
+        2:
+       Fibanachi_V(n, n_2, Fi);
     end;
 
     Fi := Fi + d_Fi;
@@ -2132,7 +2132,7 @@ begin
       if Kt >= Strk2 - 1 then
         Kt := 0;
 
-      // прописываем начало луча - перавая точка треугольника:
+      // прописываем начало луча - первая точка треугольника:
       Light_Array[Strk_L - 1, 1] := PointsArray2[Kt, 1];
       Light_Array[Strk_L - 1, 2] := PointsArray2[Kt, 2];
       Light_Array[Strk_L - 1, 3] := PointsArray2[Kt, 3];
@@ -2149,7 +2149,7 @@ begin
 
       // записываем в массив конец луча  (определяющий по сути направление)
       // В зависимости от выбранного режима
-      case 0 of
+      case fmTraceSettings.RadioGroup1.itemindex of
         0:
           begin
             Light_Array[Strk_L - 1, 4] := PointsArray2[Kt, 1] + 50 *
@@ -2167,9 +2167,37 @@ begin
             }
           end;
         1:
-          ;
+          begin
+            Light_Array[Strk_L - 1, 4] := PointsArray2[Kt, 1] + 50 *
+              sin(fi777 + pi() / 2 + pi() * Random) *
+              sin(psi + pi() / 2 + pi() * Random);
+            Light_Array[Strk_L - 1, 5] := PointsArray2[Kt, 2] + 50 *
+              sin(fi777 + pi() / 2 + pi() * Random) *
+              cos(psi + pi() / 2 + pi() * Random);
+            Light_Array[Strk_L - 1, 6] := PointsArray2[Kt, 3] + 50 *
+              cos(fi777 + pi() / 2 + pi() * Random);
+            {
+              Light_Array[Strk_L - 1, 4] := PointsArray2[Kt, 1] + 50 *sin(DegToRad(v + Shag_1)) * sin(DegToRad(Fi + Random_1));
+              Light_Array[Strk_L - 1, 5] := PointsArray2[Kt, 2] + 50 *sin(DegToRad(v + Shag_1)) * cos(DegToRad(Fi + Random_1));
+              Light_Array[Strk_L - 1, 6] := PointsArray2[Kt, 3] + 50 *cos(DegToRad(v + Shag_1));
+            }
+          end;
         2:
-          ;
+          begin
+            Light_Array[Strk_L - 1, 4] := PointsArray2[Kt, 1] + 50 *
+              sin(fi777 + pi() / 2 + pi() * Random) *
+              sin(psi + pi() / 2 + pi() * Random);
+            Light_Array[Strk_L - 1, 5] := PointsArray2[Kt, 2] + 50 *
+              sin(fi777 + pi() / 2 + pi() * Random) *
+              cos(psi + pi() / 2 + pi() * Random);
+            Light_Array[Strk_L - 1, 6] := PointsArray2[Kt, 3] + 50 *
+              cos(fi777 + pi() / 2 + pi() * Random);
+            {
+              Light_Array[Strk_L - 1, 4] := PointsArray2[Kt, 1] + 50 *sin(DegToRad(v + Shag_1)) * sin(DegToRad(Fi + Random_1));
+              Light_Array[Strk_L - 1, 5] := PointsArray2[Kt, 2] + 50 *sin(DegToRad(v + Shag_1)) * cos(DegToRad(Fi + Random_1));
+              Light_Array[Strk_L - 1, 6] := PointsArray2[Kt, 3] + 50 *cos(DegToRad(v + Shag_1));
+            }
+          end;
       end;
 
       if CheckBox1.Checked then
