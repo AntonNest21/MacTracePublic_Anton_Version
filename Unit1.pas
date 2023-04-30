@@ -7,8 +7,7 @@ uses
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Menus, ksTLB,
   ksConstTLB,
-  math, ComObj, Vcl.ComCtrls, Vcl.Samples.Gauges, SyncObjs, Vcl.ExtCtrls,
-  Unit2;
+  math, ComObj, Vcl.ComCtrls, Vcl.Samples.Gauges, SyncObjs, Vcl.ExtCtrls, Unit2;
       // asda sdasdasdqweqew
 type
   Array_Trass = array [1 .. 15] of double;
@@ -47,10 +46,10 @@ type
     N15: TMenuItem;
     _Ploskost: TButton;
     Memo1: TMemo;
-    Button1: TButton;
+    btHideFB: TButton;
     Label4: TLabel;
     btDeleteAll: TButton;
-    Button3: TButton;
+    btCancel: TButton;
     N16: TMenuItem;
     N17: TMenuItem;
     N18: TMenuItem;
@@ -100,9 +99,9 @@ type
     procedure _PloskostClick(Sender: TObject);
     procedure N15Click(Sender: TObject);
     procedure N13Click(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure btHideFBClick(Sender: TObject);
     procedure btDeleteAllClick(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
+    procedure btCancelClick(Sender: TObject);
     procedure N17Click(Sender: TObject);
     procedure N20Click(Sender: TObject);
     procedure N18Click(Sender: TObject);
@@ -801,7 +800,7 @@ begin
   begin
     if Flag_Fotom_B = strtoint(Edit3.Text) then
     begin
-      Button1.Visible := True;
+      btHideFB.Visible := True;
       Frame21.Flag_Kont := False;
       Frame21.Flag_Lu_St := False;
       Frame21.Flag_Lu_End := False;
@@ -824,7 +823,7 @@ begin
         end;
       end;
       Mnoj_Fotom := 3 / Max;
-      Button1.Visible := True;
+      btHideFB.Visible := True;
       Frame21.Flag_Kont := False;
       Frame21.Flag_Lu_St := False;
       Frame21.Flag_Lu_End := False;
@@ -848,7 +847,7 @@ begin
       end;
     end;
     Mnoj_Fotom := 3 / Max;
-    Button1.Visible := True;
+    btHideFB.Visible := True;
     Frame21.Flag_Kont := False;
     Frame21.Flag_Lu_St := False;
     Frame21.Flag_Lu_End := False;
@@ -1544,7 +1543,7 @@ begin
 
 end;
 
-procedure TForm1.Button1Click(Sender: TObject);
+procedure TForm1.btHideFBClick(Sender: TObject);
 begin
   Frame21.Flag_Kont := True;
   Frame21.Flag_Lu_St := True;
@@ -1553,7 +1552,7 @@ begin
   Frame21.Flag_Plos := True;
   Frame21.Flag_Fotom := False;
   Frame21.Render;
-  Button1.Visible := False;
+  btHideFB.Visible := False;
 end;
 
 procedure TForm1.btDeleteAllClick(Sender: TObject);
@@ -1582,7 +1581,7 @@ begin
   end;
 end;
 
-procedure TForm1.Button3Click(Sender: TObject);
+procedure TForm1.btCancelClick(Sender: TObject);
 begin
   TraceWorking := False;
 end;

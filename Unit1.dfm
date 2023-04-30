@@ -260,14 +260,14 @@ object Form1: TForm1
     TabOrder = 11
     Visible = False
   end
-  object Button1: TButton
+  object btHideFB: TButton
     Left = 54
     Top = 482
     Width = 75
     Height = 25
     Caption = #1057#1082#1088#1099#1090#1100' '#1060#1058
     TabOrder = 12
-    OnClick = Button1Click
+    OnClick = btHideFBClick
   end
   object btDeleteAll: TButton
     Left = 8
@@ -284,7 +284,7 @@ object Form1: TForm1
     TabOrder = 13
     OnClick = btDeleteAllClick
   end
-  object Button3: TButton
+  object btCancel: TButton
     Left = 199
     Top = 188
     Width = 97
@@ -297,7 +297,7 @@ object Form1: TForm1
     Font.Style = []
     ParentFont = False
     TabOrder = 14
-    OnClick = Button3Click
+    OnClick = btCancelClick
   end
   object Edit4: TEdit
     Left = 221
@@ -358,7 +358,7 @@ object Form1: TForm1
   object btReconnect: TButton
     Left = 8
     Top = 41
-    Width = 160
+    Width = 296
     Height = 32
     Caption = #1055#1077#1088#1077#1087#1086#1076#1082#1083#1102#1095#1080#1090#1100#1089#1103' '#1082' '#1082#1086#1084#1087#1072#1089
     Font.Charset = DEFAULT_CHARSET
