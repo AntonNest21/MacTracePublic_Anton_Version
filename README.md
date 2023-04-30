@@ -3,11 +3,11 @@ yessss
 
 Èçó÷åíèå ðàáîòû ñ ãèò
 
-commands of Git:
+## commands of Git:
 
 git pull - tyanem is udalennogo rep
 
-## programming
+... programming ...
 
 git add .
 git commit 
