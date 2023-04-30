@@ -5,15 +5,13 @@ yessss
 
 ## commands of Git:
 
-git pull - tyanem is udalennogo rep
-
+git pull // - tyanem is udalennogo rep
 ... programming ...
-
 git add .
-git commit 
-git push - otpravka na udal rep
+git commit -m "comment"
+git push // - otpravka na udal rep
 
-
+more:
 git status
-
+git clone https://github.com/myshonkovab/MacTracePublic.git
 // pull - òÿíóòü, push - òîëêàòü
