@@ -1,16 +1,17 @@
 # MacTracePublic
 yessss
 
-Изучение работы с гит
+Г€Г§ГіГ·ГҐГ­ГЁГҐ Г°Г ГЎГ®ГІГ» Г± ГЈГЁГІ
 
 commands of Git:
 
-git fetch
+git pull - tyanem is udalennogo rep
+===== programming
 git add .
 git commit 
-git fetch
+git push - otpravka na udal rep
 
 
 git status
 
-// pull - тянуть, push - толкать
+// pull - ГІГїГ­ГіГІГј, push - ГІГ®Г«ГЄГ ГІГј
