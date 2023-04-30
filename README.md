@@ -6,7 +6,9 @@ yessss
 commands of Git:
 
 git pull - tyanem is udalennogo rep
-===== programming
+
+## programming
+
 git add .
 git commit 
 git push - otpravka na udal rep
