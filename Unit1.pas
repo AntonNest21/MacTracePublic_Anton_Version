@@ -8,7 +8,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Menus, ksTLB,
   ksConstTLB,
   math, ComObj, Vcl.ComCtrls, Vcl.Samples.Gauges, SyncObjs, Vcl.ExtCtrls, Unit2;
-      // asda sdasdasdqweqew
+      // My coment
 type
   Array_Trass = array [1 .. 15] of double;
 
